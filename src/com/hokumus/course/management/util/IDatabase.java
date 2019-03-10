@@ -12,11 +12,16 @@ import java.util.List;
  * @author vektorel
  */
 public interface IDatabase<T> {
-    public boolean kaydet(T temp) throws Exception;
+    
+    public boolean kaydet(T temp)throws Exception;
     public boolean guncelle(T temp)throws Exception;
     public boolean sil(T temp)throws Exception;
-    public List<T> tumKayitlariGetir(T t)throws Exception;
-    public T kayitBul(int id, T t)throws Exception;
-    public List<T> KayitAra(String kolonadi, String aranan, T temp)throws Exception;
-    public List<T> KayitAra(T temp)throws Exception;
+    public List<T> tumKayitlariGetir(T tem)throws Exception;
+    public T kayitBul(int id, T temp)throws Exception;
+    public List<T> kayitAra(String kolonadi, String aranan, T temp)throws Exception;
+    public List<T> kayitAra(T temp)throws Exception;
+    public T kullaniciBul(T temp) throws Exception;
+    
+    
+    
 }

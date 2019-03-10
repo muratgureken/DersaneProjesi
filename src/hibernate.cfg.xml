@@ -50,7 +50,7 @@ Contributor(s):
     <property name="hibernate.hbm2ddl.auto">update</property>
     <property name="hibernate.show_sql">true</property> <!-- sql'leri gostermesi icin true -->
     
-    <mapping class="com.hokumus.course.management.model.Users"></mapping> <!-- usr tablosunu olusturmasi icin burada mapping yapilmali-->
+    <mapping class="com.hokumus.course.management.model.kullanici.Users"></mapping> <!-- usr tablosunu olusturmasi icin burada mapping yapilmali-->
     
   </session-factory>
 </hibernate-configuration>

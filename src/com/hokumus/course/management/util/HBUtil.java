@@ -3,12 +3,6 @@ package com.hokumus.course.management.util;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
-/**
- * Hibernate Utility class with a convenient method to get Session Factory
- * object.
- *
- * @author vektorel
- */
 public class HBUtil {
 
     private static final SessionFactory sessionFactory;
@@ -29,3 +23,4 @@ public class HBUtil {
         return sessionFactory;
     }
 }
+

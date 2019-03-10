@@ -1,4 +1,4 @@
-package com.hokumus.course.management.model;
+package com.hokumus.course.management.model.kullanici;
 
 import java.io.Serializable;
 import java.util.Date;

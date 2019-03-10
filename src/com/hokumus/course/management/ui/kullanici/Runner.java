@@ -1,11 +1,11 @@
-package com.hokumus.course.management.ui;
+package com.hokumus.course.management.ui.kullanici;
 
 import java.util.Date;
 import java.util.List;
 
-import com.hokumus.course.management.dao.UsersDAO;
-import com.hokumus.course.management.model.Role;
-import com.hokumus.course.management.model.Users;
+import com.hokumus.course.management.dao.kullanici.UsersDAO;
+import com.hokumus.course.management.model.kullanici.Role;
+import com.hokumus.course.management.model.kullanici.Users;
 
 public class Runner {
 

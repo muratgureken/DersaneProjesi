@@ -43,7 +43,7 @@ public class Gun extends BaseEntity{
         this.gun1 = gun1;
     }
 
-    @Column(name = "day21")
+    @Column(name = "day2")
     public int getGun2() {
         return gun2;
     }

@@ -22,6 +22,7 @@ public class Kurs extends BaseEntity{
     private String adi;
     private Date baslamaTarihi = grup.getBaslamaTarihi();
     private BigDecimal fiyat; 
+    private String durum;
 
     @Id
     @SequenceGenerator(name = "seq_course", allocationSize = 1, sequenceName = "seq_course")
@@ -62,5 +63,12 @@ public class Kurs extends BaseEntity{
         this.fiyat = fiyat;
     }
 
+	public String getDurum() {
+		return durum;
+	}
+
+	public void setDurum(String durum) {
+		this.durum = durum;
+	}    
 }
 

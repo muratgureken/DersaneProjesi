@@ -22,6 +22,7 @@ public class Gun extends BaseEntity{
     private int gun5;
     private int gun6;
     private int gun7;
+    private int saat;
 
     @Id
     @SequenceGenerator(name = "seq_lessons", allocationSize = 1, sequenceName = "seq_lessons")
@@ -97,5 +98,13 @@ public class Gun extends BaseEntity{
         this.gun7 = gun7;
     }
 
+    @Column(name = "saat")
+    public int getSaat() {
+        return saat;
+    }
+
+    public void setSaat(int saat) {
+        this.saat = saat;
+    }
 }
 

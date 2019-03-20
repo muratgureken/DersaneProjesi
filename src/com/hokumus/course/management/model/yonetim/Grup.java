@@ -28,6 +28,7 @@ public class Grup extends BaseEntity{
     private Ogretmen ogretmen;
     private int ogrenciSayisi;
     private Salon salon;
+    private Gun gun;
     private Date baslamaTarihi;
     private Date bitisTarihi;
 
@@ -90,6 +91,16 @@ public class Grup extends BaseEntity{
         this.salon = salon;
     }
 
+    @ManyToOne
+    @JoinColumn(name = "gun")
+    public Gun getGun() {
+        return gun;
+    }
+
+    public void setGun(Gun gun) {
+        this.gun = gun;
+    }
+    
     @Column(name = "start_date")
     public Date getBaslamaTarihi() {
         return baslamaTarihi;

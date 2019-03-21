@@ -41,7 +41,7 @@ public class EnterUser extends JFrame {
 		lblNewLabel_1.setBounds(23, 73, 101, 14);
 		getContentPane().add(lblNewLabel_1);
 		
-		txtUserName = new JTextField("hokumus");
+		txtUserName = new JTextField("mgureken");
 		txtUserName.setBounds(146, 42, 110, 20);
 		getContentPane().add(txtUserName);
 		txtUserName.setColumns(10);

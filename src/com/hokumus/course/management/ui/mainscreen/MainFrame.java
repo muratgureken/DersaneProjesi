@@ -5,6 +5,8 @@ import javax.swing.JFrame;
 import com.hokumus.course.management.model.kullanici.Role;
 import com.hokumus.course.management.ui.kullanici.EnterUser;
 import com.hokumus.course.management.ui.kullanici.UserAdd;
+import com.hokumus.course.management.ui.yonetim.KursAcma;
+import com.hokumus.course.management.ui.yonetim.SalonAcma;
 import com.hokumus.course.management.util.CourseUtils;
 
 import javax.swing.JMenuBar;
@@ -53,6 +55,11 @@ public class MainFrame extends JFrame {
 		mnSettings.add(mnItemStdAdd);
 
 		JMenuItem mnItemCourseAdd = new JMenuItem("Kurs A\u00E7ma");
+		mnItemCourseAdd.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new KursAcma().setVisible(true);
+			}
+		});
 		mnSettings.add(mnItemCourseAdd);
 
 		JMenuItem mnItemThrAdd = new JMenuItem("\u00D6\u011Fretmen Ekleme");
@@ -65,6 +72,14 @@ public class MainFrame extends JFrame {
 			}
 		});
 		mnSettings.add(mnItemUserAdd);
+		
+		JMenuItem mnýtmSalonAma = new JMenuItem("Salon A\u00E7ma");
+		mnýtmSalonAma.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new SalonAcma().setVisible(true);
+			}
+		});
+		mnSettings.add(mnýtmSalonAma);
 	}
 
 	protected void mnItemUserAdd_Action_Performed(ActionEvent e) {

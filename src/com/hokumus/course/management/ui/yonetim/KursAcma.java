@@ -77,7 +77,7 @@ public class KursAcma extends JFrame{
 	List<Grup> listegrup;
 	LinkedList<Long> UnqOgrtId = new LinkedList<Long>();
 	LinkedList<Long> UnqSlnId = new LinkedList<Long>();
-	int basTarihi, bitTarihi;
+	int basTarihi, bitTarihi, tabloBoyOgr, tabloBoySalon;
 	private JTable tableGunSecimi;
 	private JLabel lblGnSeimi;
 	private JLabel lblUyari;
@@ -106,10 +106,25 @@ public class KursAcma extends JFrame{
 		GrupDAO grupdao = new GrupDAO();
 		SalonDAO slndao = new SalonDAO();
 
+                
+		//ogretmen ve salon database'ini oku
+		try {
+			listeogr = ogrdao.tumKayitlariGetir(new Ogretmen());
+			listesalon = slndao.tumKayitlariGetir(new Salon());
+                        listekurs = kursdao.tumKayitlariGetir(new Kurs());
+			listegun = gundao.tumKayitlariGetir(new Gun());
+		} catch (Exception e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+
+                tabloBoyOgr = listeogr.size();
+                tabloBoySalon = listesalon.size();
+                
 		String[][] dataOgrtmn = null;
-		dataOgrtmn = new String[50][9];
+		dataOgrtmn = new String[tabloBoyOgr][9];
 		String[][] dataSalon = null;
-		dataSalon = new String[50][9];
+		dataSalon = new String[tabloBoySalon][9];
 		getContentPane().setLayout(null);
 
 		lblKurs = new JLabel("Kurs :");
@@ -171,31 +186,59 @@ public class KursAcma extends JFrame{
 		btnKursAc = new JButton("KURS A\u00C7");
 		btnKursAc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//saat dilimlerini kontrol et
-				
+				boolean uyari=false;
+                                String str="";
+                                tableGunSecimi.setBackground(Color.white);
+                                rbtnIndirimVar.setBackground(Color.white);
+                                txtAcmaSarti.setBackground(Color.white);
+                                comboBox.setBackground(Color.white);
+                                //saat dilimlerini kontrol et
+				if(tableGunSecimi.getSelectedRows().length==0)
+                                {
+                                    uyari = true;
+                                    tableGunSecimi.setBackground(Color.red);
+                                }
+                                if(rbtnIndirimVar.isSelected() && (txtIndirimOrani.getText().equals("")))
+                                {
+                                    uyari = true;
+                                    rbtnIndirimVar.setBackground(Color.red);
+                                }
+                                if(txtAcmaSarti.getText().equals(""))
+                                {
+                                    uyari = true;
+                                    txtAcmaSarti.setBackground(Color.red);
+                                }
+                                if(comboBox.getSelectedIndex()==0)
+                                {
+                                    uyari = true;
+                                    comboBox.setBackground(Color.red);
+                                }
+                                if(uyari)
+                                {
+                                    str = "Boþ alanlarý giriniz.";
+                                }
+                                
+                                lblUyari.setText(str);
+                                if(!uyari)
+                                {
+                                    //ogretmen ve salon degerleri tarihlere uygun mu kontrol et
+                                    //verileri database'e ekle.
+                                }
 			}
 		});
 		btnKursAc.setBackground(SystemColor.textHighlight);
 		btnKursAc.setBounds(577, 636, 100, 20);
 		btnKursAc.setEnabled(false);
 		getContentPane().add(btnKursAc);
-
-		//ogretmen database'ini oku
-		try {
-			listeogr = ogrdao.tumKayitlariGetir(new Ogretmen());
-			listesalon = slndao.tumKayitlariGetir(new Salon());
-		} catch (Exception e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
-		}
-
+                
 		btnSorgula = new JButton("SORGULA");
 		btnSorgula.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 
-				try {
-					listekurs = kursdao.tumKayitlariGetir(new Kurs());
-					listegun = gundao.tumKayitlariGetir(new Gun());
+				boolean islemYap=true;
+                                String uyariStr="";
+                                
+                                try {
 					listegrup = grupdao.tumKayitlariGetir(new Grup());
 				} catch (Exception e1) {
 					// TODO Auto-generated catch block
@@ -205,15 +248,33 @@ public class KursAcma extends JFrame{
 				datebas = dChsrBaslangicTarihi.getDate();
 				datebit = dChsrBitisTarihi.getDate();
 
-				//btnKursAc.setVisible(false);
-				//diðer parametreleri kontrol et
-				//1.combox'larin index'i 1 ve ustu mu?
-				//bitis tarihi baslangi tarihinden sonra mi?
-				//hatali olan alanlari kirmizi ile boya
-
+                                //
+                                /*dChsrBaslangicTarihi*/
+                                cmbKurs.setBackground(Color.white);
+                                
+                                //hatali giris kontrolu:
+                                //hatali giris olursa hatali girilen yerleri kirmizi ile boya, uyari label'ini doldur.
+                                                                
+                                if(datebit.compareTo(datebas)<0)
+                                {
+                                   islemYap = false;
+                                   uyariStr = uyariStr + " Tarihleri kontrol edin. ";
+                                   //datechooser'ý boya.
+                                }
+                                if(cmbKurs.getSelectedIndex()==0)
+                                {
+                                   islemYap = false;
+                                   uyariStr = uyariStr + " Bir kurs seçin.";
+                                   cmbKurs.setBackground(Color.white);
+                                }
+                                lblUyar.setText(uyariStr);
+                                
+                                if(islemYap)
+                                {    
 				UnqSlnId.clear();
 				UnqOgrtId.clear();
-
+                                String str;
+                                
 				for(int i=0;i<listegrup.size();i++)
 				{
 					if(UnqSlnId.indexOf(listegrup.get(i).getSalon().getId())==-1)
@@ -226,22 +287,30 @@ public class KursAcma extends JFrame{
 					}
 				}
 
-				dataSal = new String[UnqSlnId.size()][9];
-				dataOgr = new String[UnqOgrtId.size()][9];
+				dataSal = new String[tabloBoySalon][9];
+				dataOgr = new String[tabloBoyOgr][9];
 
-				for(int i=0;i<UnqSlnId.size();i++)
+				for(int i=0;i<tabloBoySalon;i++)
 				{
-					for(int j=2;j<9;j++)
+
+                                        for(int j=2;j<9;j++)
 					{
-						dataSal[i][j] = "S Ö A";						
+                                            if(i<UnqSlnId.size())
+                                            {
+                                                dataSal[i][j] = "SÖA";	
+                                            }
+                                            else
+                                            {
+                                                dataSal[i][j] = "";	
+                                            }                                                
 					}
 				}
 
-				for(int i=0;i<UnqOgrtId.size();i++)
+				for(int i=0;i<tabloBoyOgr;i++)
 				{
 					for(int j=2;j<9;j++)
 					{
-						dataOgr[i][j] = "S Ö A";						
+						dataOgr[i][j] = "SÖA";						
 					}
 				}
 
@@ -255,7 +324,6 @@ public class KursAcma extends JFrame{
 						dataSal[indis][1] = listegrup.get(i).getSalon().getKod();
 						dataOgr[indis2][0] = Long.toString(listegrup.get(i).getOgretmen().getId());
 						dataOgr[indis2][1] = listegrup.get(i).getOgretmen().getAd()+" "+listegrup.get(i).getOgretmen().getSoyad();
-						String str;
 						int indis3, indis4;
 						
 						if(listegrup.get(i).getGun().getGun1()==1)
@@ -263,66 +331,153 @@ public class KursAcma extends JFrame{
 							indis3 = listegrup.get(i).getGun().getSaat();
 							str = saatTanim.substring(indis3,indis3+1);
 							indis4 = dataSal[indis][2].indexOf(str);
-							//indis4'teki elemani cikar
-							dataSal[indis][2]  = dataSal[indis][2]+saatTanim.substring(indis3,indis3+1);
-							dataOgr[indis2][2] = dataOgr[indis2][2]+saatTanim.substring(indis3,indis3+1);
+                                                        if(indis4!=-1)
+                                                        {
+                                                            //indis4'teki elemani cikar
+                                                            dataSal[indis][2]  = StringDegeriCikar(dataSal[indis][2], indis4);
+                                                        }
+                                                        indis4 = dataOgr[indis2][2].indexOf(str);
+                                                        if(indis4!=-1)
+                                                        {
+                                                            //indis4'teki elemani cikar
+                                                            dataOgr[indis2][2] = StringDegeriCikar(dataOgr[indis2][2], indis4);
+                                                        }                                                        
 						}
 						if(listegrup.get(i).getGun().getGun1()==1)
 						{
-							dataSal[indis][3]  = dataSal[indis][3]+listegrup.get(i).getGun().getSaat();
-							dataOgr[indis2][3] = dataOgr[indis2][3]+listegrup.get(i).getGun().getSaat();
-						}
+							indis3 = listegrup.get(i).getGun().getSaat();
+							str = saatTanim.substring(indis3,indis3+1);
+							indis4 = dataSal[indis][3].indexOf(str);
+                                                        if(indis4!=-1)
+                                                        {
+                                                            //indis4'teki elemani cikar
+                                                            dataSal[indis][3]  = StringDegeriCikar(dataSal[indis][3], indis4);
+                                                        }
+                                                        indis4 = dataOgr[indis2][3].indexOf(str);
+                                                        if(indis4!=-1)
+                                                        {
+                                                            //indis4'teki elemani cikar
+                                                            dataOgr[indis2][3] = StringDegeriCikar(dataOgr[indis2][3], indis4);
+                                                        } 						
+                                                }
 						if(listegrup.get(i).getGun().getGun1()==1)
 						{
-							dataSal[indis][4]  = dataSal[indis][4]+listegrup.get(i).getGun().getSaat();
-							dataOgr[indis2][4] = dataOgr[indis2][4]+listegrup.get(i).getGun().getSaat();
-						}
+							indis3 = listegrup.get(i).getGun().getSaat();
+							str = saatTanim.substring(indis3,indis3+1);
+							indis4 = dataSal[indis][4].indexOf(str);
+                                                        if(indis4!=-1)
+                                                        {
+                                                            //indis4'teki elemani cikar
+                                                            dataSal[indis][4]  = StringDegeriCikar(dataSal[indis][4], indis4);
+                                                        }
+                                                        indis4 = dataOgr[indis2][4].indexOf(str);
+                                                        if(indis4!=-1)
+                                                        {
+                                                            //indis4'teki elemani cikar
+                                                            dataOgr[indis2][4] = StringDegeriCikar(dataOgr[indis2][4], indis4);
+                                                        } 						
+                                                }
 						if(listegrup.get(i).getGun().getGun1()==1)
 						{
-							dataSal[indis][5]  = dataSal[indis][5]+listegrup.get(i).getGun().getSaat();
-							dataOgr[indis2][5] = dataOgr[indis2][5]+listegrup.get(i).getGun().getSaat();
-						}
+							indis3 = listegrup.get(i).getGun().getSaat();
+							str = saatTanim.substring(indis3,indis3+1);
+							indis4 = dataSal[indis][5].indexOf(str);
+                                                        if(indis4!=-1)
+                                                        {
+                                                            //indis4'teki elemani cikar
+                                                            dataSal[indis][5]  = StringDegeriCikar(dataSal[indis][5], indis4);
+                                                        }
+                                                        indis4 = dataOgr[indis2][5].indexOf(str);
+                                                        if(indis4!=-1)
+                                                        {
+                                                            //indis4'teki elemani cikar
+                                                            dataOgr[indis2][5] = StringDegeriCikar(dataOgr[indis2][5], indis4);
+                                                        } 						
+                                                }
 						if(listegrup.get(i).getGun().getGun1()==1)
 						{
-							dataSal[indis][6]  = dataSal[indis][6]+listegrup.get(i).getGun().getSaat();
-							dataOgr[indis2][6] = dataOgr[indis2][6]+listegrup.get(i).getGun().getSaat();
-						}
+							indis3 = listegrup.get(i).getGun().getSaat();
+							str = saatTanim.substring(indis3,indis3+1);
+							indis4 = dataSal[indis][6].indexOf(str);
+                                                        if(indis4!=-1)
+                                                        {
+                                                            //indis4'teki elemani cikar
+                                                            dataSal[indis][6]  = StringDegeriCikar(dataSal[indis][6], indis4);
+                                                        }
+                                                        indis4 = dataOgr[indis2][6].indexOf(str);
+                                                        if(indis4!=-1)
+                                                        {
+                                                            //indis4'teki elemani cikar
+                                                            dataOgr[indis2][6] = StringDegeriCikar(dataOgr[indis2][6], indis4);
+                                                        } 						
+                                                }
 						if(listegrup.get(i).getGun().getGun1()==1)
 						{
-							dataSal[indis][7]  = dataSal[indis][7]+listegrup.get(i).getGun().getSaat();
-							dataOgr[indis2][7] = dataOgr[indis2][7]+listegrup.get(i).getGun().getSaat();
-						}
+							indis3 = listegrup.get(i).getGun().getSaat();
+							str = saatTanim.substring(indis3,indis3+1);
+							indis4 = dataSal[indis][7].indexOf(str);
+                                                        if(indis4!=-1)
+                                                        {
+                                                            //indis4'teki elemani cikar
+                                                            dataSal[indis][7]  = StringDegeriCikar(dataSal[indis][7], indis4);
+                                                        }
+                                                        indis4 = dataOgr[indis2][7].indexOf(str);
+                                                        if(indis4!=-1)
+                                                        {
+                                                            //indis4'teki elemani cikar
+                                                            dataOgr[indis2][7] = StringDegeriCikar(dataOgr[indis2][7], indis4);
+                                                        } 						
+                                                }
 						if(listegrup.get(i).getGun().getGun1()==1)
 						{
-							dataSal[indis][8]  = dataSal[indis][8]+listegrup.get(i).getGun().getSaat();
-							dataOgr[indis2][8] = dataOgr[indis2][8]+listegrup.get(i).getGun().getSaat();
-						}
+							indis3 = listegrup.get(i).getGun().getSaat();
+							str = saatTanim.substring(indis3,indis3+1);
+							indis4 = dataSal[indis][8].indexOf(str);
+                                                        if(indis4!=-1)
+                                                        {
+                                                            //indis4'teki elemani cikar
+                                                            dataSal[indis][8]  = StringDegeriCikar(dataSal[indis][8], indis4);
+                                                        }
+                                                        indis4 = dataOgr[indis2][8].indexOf(str);
+                                                        if(indis4!=-1)
+                                                        {
+                                                            //indis4'teki elemani cikar
+                                                            dataOgr[indis2][8] = StringDegeriCikar(dataOgr[indis2][8], indis4);
+                                                        } 						}
 					}
 				}
 				
 				//listede olmayan ogretmen ve salonlari tum gunlere uygun olarak isaretle.
 				/*listesalon.get(0).getId();
 				listeogr.get(0).getId();*/
-				
+				for(int i=0;i<listesalon.size();i++)
+                                {
+                                    if(doubleArrayBul(dataSal, tabloBoySalon, 0, Long.toString(listesalon.get(i).getId()))==-1)
+                                    {
+                                        dataSal[UnqSlnId.size()+i][0] = Long.toString(listesalon.get(i).getId());
+                                        dataSal[UnqSlnId.size()+i][1] = listegrup.get(i).getSalon().getKod();
+                                    }
+                                }
+
+				for(int i=0;i<listeogr.size();i++)
+                                {
+                                    if(doubleArrayBul(dataOgr, tabloBoyOgr, 0, Long.toString(listeogr.get(i).getId()))==-1)
+                                    {
+                                        dataOgr[UnqOgrtId.size()+i][0] = Long.toString(listeogr.get(i).getId());
+                                        dataOgr[UnqOgrtId.size()+i][1] = listegrup.get(i).getOgretmen().getAd()+" "+listegrup.get(i).getOgretmen().getSoyad();
+                                    }
+                                }
+                                
 				tableSalon = new JTable(dataSal,salonColumnNames);
 				tableOgrtmn = new JTable(dataOgr,ogrtmColumnNames);
-
-				//listegrup.get(0).getOgretmen().equals(obj);
-
-				//kurs kayitlarini getir.
-				//tarih-saat/kurs ve tarih-saat/ogretmen ikilemeleri çikar.
-				//sonuclarla, arayuzden girilen tarihler arasinda kesismeyenleri bul.
-				//bulunan degerlerden (ogretmen-id) database'den ogretmenleri bul
-				//ogretmenleri tabloya yaz
-				//bulunan salon-id degerlerinden salon kodlarini cek.
-				//salonlari tabloya yaz
+                            }
 			}
 		});
 		btnSorgula.setBackground(SystemColor.textHighlight);
 		btnSorgula.setBounds(589, 49, 88, 20);
 		getContentPane().add(btnSorgula);
 
-		lblUyar = new JLabel("Uyar\u0131");
+		lblUyar = new JLabel("");
 		lblUyar.setFont(new Font("Times New Roman", Font.BOLD, 11));
 		lblUyar.setForeground(Color.RED);
 		lblUyar.setBounds(21, 73, 206, 14);
@@ -502,4 +657,48 @@ public class KursAcma extends JFrame{
 
 		return sonuc;
 	}
+        
+        public String StringDegeriCikar(String str, int index)
+        {
+            String sonuc;
+            int boyut = str.length();
+
+            if(boyut==1)
+            {
+                sonuc = "";
+            }
+            else
+            {
+                if(index==0)
+                {
+                    sonuc = str.substring(1,boyut);
+                }
+                else if(index==(boyut-1))
+                {
+                    sonuc = str.substring(0,boyut-1);
+                }
+                else
+                {
+                    sonuc = str.substring(0,index)+str.substring(index+1,boyut);
+                }
+            }
+            
+            return sonuc;
+        }
+        
+        public int doubleArrayBul(String[][] array, int size, int index1, String deger)
+        {
+            int sonuc=-1;
+            
+            for(int i=0;i<size;i++)
+            {
+                if(array[i][index1].equals(deger))
+                {
+                    sonuc = i;
+                    break;
+                }
+            }
+            
+            return sonuc;
+        }
 }

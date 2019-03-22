@@ -11,7 +11,7 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
-
+import java.math.BigDecimal;
 import com.hokumus.course.management.dao.ik.OgretmenDAO;
 import com.hokumus.course.management.dao.kullanici.UsersDAO;
 import com.hokumus.course.management.dao.yonetim.GrupDAO;
@@ -35,6 +35,9 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
 import javax.swing.JRadioButton;
 import javax.swing.JTextPane;
 import javax.swing.event.ChangeListener;
@@ -93,7 +96,8 @@ public class KursAcma extends JFrame{
 	private JLabel lblFiyattl;
 	private JTextField txtFiyat;
 	private JTable table_1;
-
+        String secilenKurs="";
+        JComboBox cmbSaat;
 	public KursAcma() {
 		getContentPane().setLayout(null);
 		
@@ -138,6 +142,19 @@ public class KursAcma extends JFrame{
 			e1.printStackTrace();
 		}
 
+                //EKLE ogretmen combox icerigini doldur. 0. indis dolu zaten
+		comboBox = new JComboBox();
+                String [] str1 = new String[listeogr.size()];
+                for(int i=0;i<listeogr.size();i++)
+                {
+                    str1[i] = listeogr.get(i).getAd()+" "+listeogr.get(i).getSoyad();
+                }
+		comboBox.setModel(new DefaultComboBoxModel(str1));
+		comboBox.setBounds(525, 650, 135, 20);
+		getContentPane().add(comboBox);
+                
+                //EKLE salon combox ekle ve icerigini doldur.
+                
 		System.out.println("ogrt tablosu boyu:"+listeogr.size()+" salon tablosu boyu:"+listesalon.size());
 		
 		tabloBoyOgr = listeogr.size();
@@ -249,81 +266,104 @@ public class KursAcma extends JFrame{
 				lblUyari.setText(str);
 				if(!uyari)
 				{
-					//ogretmen ve salon degerleri tarihlere uygun mu kontrol et
-					//verileri database'e ekle.
-					//ilgili salonu, id bilgisinden bul
-					//ilgili ogretmen id bilgisini bul
-					Date dt1 = new Date();
-					
-					Gun gun1 = new Gun();
-					gun1.setEklemeTarihi(dt1);
-					/*gun1.setEkleyen(ekleyen);
-					gun1.setGun1(gun1);
-					gun1.setGun2((gun1);
-					gun1.setGun3(gun1);
-					gun1.setGun4(gun1);
-					gun1.setGun5(gun1);
-					gun1.setGun6(gun1);
-					gun1.setGun7(gun1);
-					gun1.setGuncellemeTarihi(dt1);
-					gun1.setGuncelleyen(guncelleyen);*/
-					gun1.setKayitDurumu(true);
-					//gun1.setId(id); /*otomatik eklenecek mi bakalim*/
-					//gun1.setSaat(saat);
-					
-					Kurs kurs1 = new Kurs();
-					/*kurs1.setAdi(adi);
-					kurs1.setbaslamaTarihi(baslamaTarihi);
-					kurs1.setDurum(durum);
-					kurs1.setEklemeTarihi(dt1);
-					kurs1.setEkleyen(ekleyen);
-					kurs1.setFiyat(fiyat);
-					kurs1.setGuncellemeTarihi(dt1);
-					kurs1.setGuncelleyen(guncelleyen);*/
-					//kurs1.setId(id); /*otomatik eklenecek mi bakalim*/
-					kurs1.setKayitDurumu(true);
-					
-					Ogretmen ogr1 = new Ogretmen();
-					ogr1.setAd(listeogr.get(0).getAd());;
-					ogr1.setAdres(listeogr.get(0).getAdres());
-					ogr1.setEklemeTarihi(listeogr.get(0).getEklemeTarihi());
-					ogr1.setEkleyen(listeogr.get(0).getEkleyen());
-					ogr1.setGuncellemeTarihi(listeogr.get(0).getGuncellemeTarihi());
-					ogr1.setGuncelleyen(listeogr.get(0).getGuncelleyen());
-					ogr1.setId(listeogr.get(0).getId());
-					ogr1.setKayitDurumu(listeogr.get(0).getKayitDurumu());
-					ogr1.setKayitTarihi(listeogr.get(0).getKayitTarihi());
-					ogr1.setMail(listeogr.get(0).getMail());
-					ogr1.setSoyad(listeogr.get(0).getSoyad());
-					ogr1.setTel(listeogr.get(0).getTel());
-					ogr1.setUcret(listeogr.get(0).getUcret());
-					
-					Salon sln1 = new Salon();
-					sln1.setAdi(listesalon.get(0).getAdi());
-					sln1.setEklemeTarihi(listesalon.get(0).getEklemeTarihi());
-					sln1.setEkleyen(listesalon.get(0).getEkleyen());
-					sln1.setGuncellemeTarihi(listesalon.get(0).getGuncellemeTarihi());
-					sln1.setGuncelleyen(listesalon.get(0).getGuncelleyen());
-					sln1.setId(listesalon.get(0).getId());
-					sln1.setKapasite(listesalon.get(0).getKapasite());
-					sln1.setKayitDurumu(listesalon.get(0).getKayitDurumu());
-					sln1.setKod(listesalon.get(0).getKod());
-					
-					Grup grp1 = new Grup();
-					/*grp1.setAdi(adi);
-					grp1.setBaslamaTarihi(baslamaTarihi);
-					grp1.setBitisTarihi(bitisTarihi);*/
-					grp1.setEklemeTarihi(dt1);
-					//grp1.setGun(gun);//gun bilgisi
-					grp1.setGuncellemeTarihi(dt1);
-					//grp1.setGuncelleyen(guncelleyen);
-					//grp1.setId(id); /*otomatik eklenecek mi bakalim*/
-					//grp1.setKurs(kurs);//kurs bilgisi
-					grp1.setOgrenciSayisi(0);
-					grp1.setOgretmen(ogr1);//ogretmen bilgisi
-					grp1.setSalon(sln1);//salon bilgisi
-					grp1.setKayitDurumu(true);
-					//grupdao.kaydet(temp);
+                                    //EKLE popup sonucuna gore islem yap.
+                                    JOptionPane.showConfirmDialog(KursAcma.this, "Kursu açmak istediðinizden emin misiniz?");
+                                    try {
+                                        //ogretmen ve salon degerleri tarihlere uygun mu kontrol et
+                                        //verileri database'e ekle.
+                                        //ilgili salonu, id bilgisinden bul
+                                        //ilgili ogretmen id bilgisini bul
+                                        Date dt1 = new Date();
+                                        
+                                        /*Tablodan secilen indisleri al*/
+                                        int[] secilenGunler = tableGunSecimi.getSelectedRows();
+                                        int[] secim = new int[7];
+                                        for(int i=0;i<7;i++)
+                                        {
+                                            secim[i] = 0;
+                                        }
+                                        for(int i=0;i<secilenGunler.length;i++)
+                                        {
+                                            secim[secilenGunler[i]] = 1;
+                                        }
+                                        
+                                        Gun gun1 = new Gun();
+                                        gun1.setEklemeTarihi(dt1);
+                                        gun1.setEkleyen("Murat Güreken");
+                                        gun1.setGun1(secim[0]);
+                                        gun1.setGun2(secim[1]);
+                                        gun1.setGun3(secim[2]);
+                                        gun1.setGun4(secim[3]);
+                                        gun1.setGun5(secim[4]);
+                                        gun1.setGun6(secim[5]);
+                                        gun1.setGun7(secim[6]);
+                                        gun1.setGuncellemeTarihi(dt1);
+                                        gun1.setGuncelleyen("Murat Güreken");
+                                        gun1.setKayitDurumu(true);
+                                        //gun1.setId(id); /*otomatik eklenecek mi bakalim*/
+                                        gun1.setSaat(cmbSaat.getSelectedIndex());
+                                        gundao.kaydet(gun1);
+                                        
+                                        Kurs kurs1 = new Kurs();
+                                        kurs1.setAdi(secilenKurs);
+                                        kurs1.setbaslamaTarihi(datebas);
+                                        kurs1.setDurum("Kayýt açýk");
+                                        kurs1.setEklemeTarihi(dt1);
+                                        kurs1.setEkleyen("Murat Güreken");
+                                        BigDecimal bd = new BigDecimal(txtFiyat.getText());
+                                        kurs1.setFiyat(bd);
+                                        kurs1.setGuncellemeTarihi(dt1);
+                                        kurs1.setGuncelleyen("Murat Güreken");
+                                        //kurs1.setId(id); /*otomatik eklenecek mi bakalim*/
+                                        kurs1.setKayitDurumu(true);
+                                        kursdao.kaydet(kurs1);
+                                        
+                                        //EKLE ogretmen indisi bul
+                                        Ogretmen ogr1 = new Ogretmen();
+                                        ogr1.setAd(listeogr.get(0).getAd());;
+                                        ogr1.setAdres(listeogr.get(0).getAdres());
+                                        ogr1.setEklemeTarihi(listeogr.get(0).getEklemeTarihi());
+                                        ogr1.setEkleyen(listeogr.get(0).getEkleyen());
+                                        ogr1.setGuncellemeTarihi(listeogr.get(0).getGuncellemeTarihi());
+                                        ogr1.setGuncelleyen(listeogr.get(0).getGuncelleyen());
+                                        ogr1.setId(listeogr.get(0).getId());
+                                        ogr1.setKayitDurumu(listeogr.get(0).getKayitDurumu());
+                                        ogr1.setKayitTarihi(listeogr.get(0).getKayitTarihi());
+                                        ogr1.setMail(listeogr.get(0).getMail());
+                                        ogr1.setSoyad(listeogr.get(0).getSoyad());
+                                        ogr1.setTel(listeogr.get(0).getTel());
+                                        ogr1.setUcret(listeogr.get(0).getUcret());
+                                        
+                                        //EKLE salon indisi bul
+                                        Salon sln1 = new Salon();
+                                        sln1.setAdi(listesalon.get(0).getAdi());
+                                        sln1.setEklemeTarihi(listesalon.get(0).getEklemeTarihi());
+                                        sln1.setEkleyen(listesalon.get(0).getEkleyen());
+                                        sln1.setGuncellemeTarihi(listesalon.get(0).getGuncellemeTarihi());
+                                        sln1.setGuncelleyen(listesalon.get(0).getGuncelleyen());
+                                        sln1.setId(listesalon.get(0).getId());
+                                        sln1.setKapasite(listesalon.get(0).getKapasite());
+                                        sln1.setKayitDurumu(listesalon.get(0).getKayitDurumu());
+                                        sln1.setKod(listesalon.get(0).getKod());
+                                        
+                                        Grup grp1 = new Grup();
+                                        //grp1.setAdi(adi);/*EKLE*/
+                                        grp1.setBaslamaTarihi(datebas);
+                                        grp1.setBitisTarihi(datebit);
+                                        grp1.setEklemeTarihi(dt1);
+                                        grp1.setGun(gun1);//gun bilgisi
+                                        grp1.setGuncellemeTarihi(dt1);
+                                        grp1.setGuncelleyen("Murat Güreken");
+                                        //grp1.setId(id); /*otomatik eklenecek mi bakalim*/
+                                        grp1.setKurs(kurs1);//kurs bilgisi
+                                        grp1.setOgrenciSayisi(0);
+                                        grp1.setOgretmen(ogr1);//ogretmen bilgisi
+                                        grp1.setSalon(sln1);//salon bilgisi
+                                        grp1.setKayitDurumu(true);
+                                        grupdao.kaydet(grp1);
+                                    } catch (Exception ex) {
+                                        Logger.getLogger(KursAcma.class.getName()).log(Level.SEVERE, null, ex);
+                                    }
 				}
 			}
 		});
@@ -338,7 +378,7 @@ public class KursAcma extends JFrame{
 
 				boolean islemYap=true;
 				String uyariStr="";
-
+                                btnKursAc.setEnabled(false);
 				try {
 					listegrup = grupdao.tumKayitlariGetir(new Grup());
 				} catch (Exception e1) {
@@ -380,10 +420,11 @@ public class KursAcma extends JFrame{
 
 				if(islemYap)
 				{    
-					UnqSlnId.clear();
+				        btnKursAc.setEnabled(true);
+                                        UnqSlnId.clear();
 					UnqOgrtId.clear();
 					String str;
-
+                                        secilenKurs = (String)cmbKurs.getSelectedItem();
 					for(int i=0;i<listegrup.size();i++)
 					{
 						if(UnqSlnId.indexOf(listegrup.get(i).getSalon().getId())==-1)
@@ -688,7 +729,7 @@ public class KursAcma extends JFrame{
 		lblSaat.setBounds(453, 615, 46, 14);
 		getContentPane().add(lblSaat);
 
-		JComboBox cmbSaat = new JComboBox();
+		cmbSaat = new JComboBox();
 		cmbSaat.setModel(new DefaultComboBoxModel(new String[] {"Saat se\u00E7iniz...", "Sabah", "\u00D6\u011Flen", "Ak\u015Fam"}));
 		cmbSaat.setBounds(525, 612, 135, 20);
 		getContentPane().add(cmbSaat);
@@ -735,11 +776,6 @@ public class KursAcma extends JFrame{
 		lblretmen = new JLabel("\u00D6\u011Fretmen : ");
 		lblretmen.setBounds(453, 653, 78, 14);
 		getContentPane().add(lblretmen);
-
-		comboBox = new JComboBox();
-		comboBox.setModel(new DefaultComboBoxModel(new String[] {"\u00D6\u011Fretmen se\u00E7iniz..."}));
-		comboBox.setBounds(525, 650, 135, 20);
-		getContentPane().add(comboBox);
 		
 		lblFiyattl = new JLabel("Fiyat (TL) : ");
 		lblFiyattl.setBounds(172, 612, 103, 14);

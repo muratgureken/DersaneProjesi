@@ -6,6 +6,7 @@ import com.hokumus.course.management.model.kullanici.Role;
 import com.hokumus.course.management.ui.kullanici.EnterUser;
 import com.hokumus.course.management.ui.kullanici.UserAdd;
 import com.hokumus.course.management.ui.yonetim.KursAcma;
+import com.hokumus.course.management.ui.yonetim.KursListesi;
 import com.hokumus.course.management.ui.yonetim.SalonAcma;
 import com.hokumus.course.management.util.CourseUtils;
 
@@ -46,6 +47,11 @@ public class MainFrame extends JFrame {
 		mnDosya.add(mnItemThrList);
 
 		JMenuItem mnItemCrsList = new JMenuItem("Kurs Listesi");
+		mnItemCrsList.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new KursListesi().setVisible(true);
+			}
+		});
 		mnDosya.add(mnItemCrsList);
 
 		JMenu mnSettings = new JMenu("\u0130\u015Flem");

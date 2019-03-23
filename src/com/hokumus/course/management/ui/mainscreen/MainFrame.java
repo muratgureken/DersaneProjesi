@@ -37,10 +37,15 @@ public class MainFrame extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 
+		System.out.println("maain frame acildi!...");
 		JMenu mnDosya = new JMenu("Dosya");
 		menuBar.add(mnDosya);
 
 		JMenuItem mnItemStdList = new JMenuItem("\u00D6\u011Frenci Listesi");
+		mnItemStdList.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
 		mnDosya.add(mnItemStdList);
 
 		JMenuItem mnItemThrList = new JMenuItem("\u00D6\u011Fretmen Listesi");
@@ -79,13 +84,13 @@ public class MainFrame extends JFrame {
 		});
 		mnSettings.add(mnItemUserAdd);
 		
-		JMenuItem mnýtmSalonAma = new JMenuItem("Salon A\u00E7ma");
-		mnýtmSalonAma.addActionListener(new ActionListener() {
+		JMenuItem mntmSalonAma = new JMenuItem("Salon A\u00E7ma");
+		mntmSalonAma.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				new SalonAcma().setVisible(true);
 			}
 		});
-		mnSettings.add(mnýtmSalonAma);
+		mnSettings.add(mntmSalonAma);
 	}
 
 	protected void mnItemUserAdd_Action_Performed(ActionEvent e) {
@@ -102,6 +107,7 @@ public class MainFrame extends JFrame {
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
 
+		
 		JMenu mnDosya = new JMenu("Dosya");
 		menuBar.add(mnDosya);
 
@@ -117,7 +123,6 @@ public class MainFrame extends JFrame {
 		JMenu mnSettings = new JMenu("\u0130\u015Flem");
 		menuBar.add(mnSettings);
 
-
-		
+		getContentPane().add(menuBar);		
 	}
 }

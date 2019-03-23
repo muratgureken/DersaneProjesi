@@ -67,7 +67,6 @@ public class KursAcma extends JFrame{
 	private JLabel lblMinKapasitekii;
 	private JTextField txtAcmaSarti;
 	private JButton btnKursAc;
-	JLabel lblUyar;
 	JButton btnSorgula;
 	JLabel lblIndirimOranyzde;
 	JRadioButton rbtnIndirimVar;
@@ -117,11 +116,11 @@ public class KursAcma extends JFrame{
 						"New column", "New column", "New column", "New column"
 				}
 				));
-		table_1.setBounds(46, 190, 125, -139);
+		table_1.setBounds(326, 199, 125, -139);
 		getContentPane().add(table_1);
 		setTitle("Kurs A\u00E7ma");
 		setBackground(SystemColor.desktop);
-		setBounds(100,100,737,831);//setEnabled(false);
+		setBounds(100,100,790,811);//setEnabled(false);
 
 		OgretmenDAO ogrdao = new OgretmenDAO();
 		KursDAO kursdao = new KursDAO();
@@ -149,7 +148,7 @@ public class KursAcma extends JFrame{
 			str1[i+1] = listeogr.get(i).getAd()+" "+listeogr.get(i).getSoyad();
 		}
 		comboBox.setModel(new DefaultComboBoxModel(str1));
-		comboBox.setBounds(257, 675, 135, 20);
+		comboBox.setBounds(116, 141, 155, 20);
 		getContentPane().add(comboBox);
 
 		cmbSalon = new JComboBox();
@@ -160,7 +159,7 @@ public class KursAcma extends JFrame{
 			str2[i+1] = listesalon.get(i).getKod();
 		}
 		cmbSalon.setModel(new DefaultComboBoxModel(str2));		
-		cmbSalon.setBounds(257, 710, 135, 20);
+		cmbSalon.setBounds(116, 172, 155, 20);
 		getContentPane().add(cmbSalon);		
 
 		tabloBoyOgr = listeogr.size();
@@ -174,25 +173,25 @@ public class KursAcma extends JFrame{
 		getContentPane().setLayout(null);
 
 		lblKurs = new JLabel("Kurs :");
-		lblKurs.setBounds(21, 39, 46, 14);
+		lblKurs.setBounds(21, 45, 46, 14);
 		getContentPane().add(lblKurs);
 
 		cmbKurs = new JComboBox();
-		cmbKurs.setBounds(71, 36, 155, 20);
+		cmbKurs.setBounds(116, 45, 155, 20);
 		cmbKurs.setModel(new DefaultComboBoxModel(new String[] {"Bir Kurs Se\u00E7iniz...", ".NET Yaz\u0131l\u0131m Uzmanl\u0131\u011F\u0131", "Java ve Android Yaz\u0131l\u0131m", "Grafik Tasar\u0131m", "IOS (Objective C)", "Phyton Programlama", "Microsoft A\u011F ve Sistem", "Web Tasar\u0131m", "Mobil Yaz\u0131l\u0131m Android", "Cisco (CCNA)", "\u0130leri C# 6.0"}));
 		getContentPane().add(cmbKurs);
 
 		lblBalangTarihi = new JLabel("Ba\u015Flang\u0131\u00E7 Tarihi :");
-		lblBalangTarihi.setBounds(260, 42, 100, 14);
+		lblBalangTarihi.setBounds(21, 209, 88, 14);
 		getContentPane().add(lblBalangTarihi);
 
 		dChsrBaslangicTarihi = new JDateChooser();
-		dChsrBaslangicTarihi.setBounds(376, 39, 155, 20);
+		dChsrBaslangicTarihi.setBounds(116, 209, 155, 20);
 		Date dd = dChsrBaslangicTarihi.getDate();
 		getContentPane().add(dChsrBaslangicTarihi);
 
 		scrollPane_2 = new JScrollPane();
-		scrollPane_2.setBounds(21, 156, 656, 220);
+		scrollPane_2.setBounds(21, 326, 719, 220);
 		getContentPane().add(scrollPane_2);
 
 		tableOgrtmn = new JTable(dataOgrtmn,ogrtmColumnNames);
@@ -203,15 +202,15 @@ public class KursAcma extends JFrame{
 		scrollPane_2.setViewportView(tableOgrtmn);
 
 		JLabel lblretmenListesi = new JLabel("\u00D6\u011Fretmen Listesi");
-		lblretmenListesi.setBounds(21, 132, 121, 14);
+		lblretmenListesi.setBounds(21, 302, 121, 14);
 		getContentPane().add(lblretmenListesi);
 
 		JLabel lblSalonListesi = new JLabel("Salon Listesi");
-		lblSalonListesi.setBounds(21, 387, 88, 14);
+		lblSalonListesi.setBounds(21, 557, 88, 14);
 		getContentPane().add(lblSalonListesi);
 
 		scrollPane_1 = new JScrollPane();
-		scrollPane_1.setBounds(21, 412, 656, 141);
+		scrollPane_1.setBounds(21, 582, 719, 140);
 		getContentPane().add(scrollPane_1);
 
 		tableSalon = new JTable(dataSalon,salonColumnNames);
@@ -221,11 +220,11 @@ public class KursAcma extends JFrame{
 		scrollPane_1.setViewportView(tableSalon);
 
 		lblMinKapasitekii = new JLabel("Minimum Kay\u0131t (Ki\u015Fi) : ");
-		lblMinKapasitekii.setBounds(434, 713, 144, 14);
+		lblMinKapasitekii.setBounds(504, 147, 144, 14);
 		getContentPane().add(lblMinKapasitekii);
 
 		txtAcmaSarti = new JTextField();
-		txtAcmaSarti.setBounds(565, 710, 85, 20);
+		txtAcmaSarti.setBounds(635, 144, 85, 20);
 		getContentPane().add(txtAcmaSarti);
 		txtAcmaSarti.setColumns(10);
 
@@ -233,7 +232,8 @@ public class KursAcma extends JFrame{
 		btnKursAc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				boolean uyari=false;
-				String str="";
+				
+				String str="",str2="";
 				tableGunSecimi.setBackground(Color.white);
 				txtIndirimOrani.setBackground(Color.white);
 				txtAcmaSarti.setBackground(Color.white);
@@ -242,12 +242,43 @@ public class KursAcma extends JFrame{
 				cmbSalon.setBackground(Color.white);
 				cmbSaat.setBackground(Color.white);
 				txtGrupAdi.setBackground(Color.white);
+				cmbKurs.setBackground(Color.white);
 
+				datebas = dChsrBaslangicTarihi.getDate();
+				datebit = dChsrBitisTarihi.getDate();
+				System.out.println("tarihler:"+datebas+", "+datebit);
+				//
+				/*dChsrBaslangicTarihi*/
+				dChsrBaslangicTarihi.setBackground(Color.white);
+				dChsrBitisTarihi.setBackground(Color.white);
+
+				//hatali giris kontrolu:
+				//hatali giris olursa hatali girilen yerleri kirmizi ile boya, uyari label'ini doldur.
+				if((datebas==null)||(datebit==null))
+				{
+					uyari = false;
+					str2 = "Tarihleri kontrol edin. ";					
+					dChsrBaslangicTarihi.setBackground(Color.red);
+					dChsrBitisTarihi.setBackground(Color.red);
+				}
+				else if(datebit.compareTo(datebas)<0)
+				{
+					uyari = false;
+					str2 = "Tarihleri kontrol edin. ";
+					dChsrBaslangicTarihi.setBackground(Color.red);
+					dChsrBitisTarihi.setBackground(Color.red);
+				}				
+				
 				//saat dilimlerini kontrol et
 				if(tableGunSecimi.getSelectedRows().length==0)
 				{
 					uyari = true;
 					tableGunSecimi.setBackground(Color.red);
+				}
+				if(cmbKurs.getSelectedIndex()==0)
+				{
+					uyari = true;
+					cmbKurs.setBackground(Color.red);
 				}
 				if(rbtnIndirimVar.isSelected() && (txtIndirimOrani.getText().equals("")))
 				{
@@ -287,7 +318,7 @@ public class KursAcma extends JFrame{
 
 				if(uyari)
 				{
-					str = "Boþ alanlarý giriniz.";
+					str = "Boþ alanlarý giriniz. "+str2;
 				}
 
 				lblUyari.setText(str);
@@ -397,8 +428,7 @@ public class KursAcma extends JFrame{
 			}
 		});
 		btnKursAc.setBackground(SystemColor.controlHighlight);
-		btnKursAc.setBounds(550, 745, 100, 20);
-		btnKursAc.setEnabled(false);
+		btnKursAc.setBounds(620, 254, 100, 20);
 		getContentPane().add(btnKursAc);
 
 		btnSorgula = new JButton("SORGULA");
@@ -420,7 +450,6 @@ public class KursAcma extends JFrame{
 				System.out.println("tarihler:"+datebas+", "+datebit);
 				//
 				/*dChsrBaslangicTarihi*/
-				cmbKurs.setBackground(Color.white);
 				dChsrBaslangicTarihi.setBackground(Color.white);
 				dChsrBitisTarihi.setBackground(Color.white);
 
@@ -429,7 +458,9 @@ public class KursAcma extends JFrame{
 				if((datebas==null)||(datebit==null))
 				{
 					islemYap = false;
-					uyariStr = uyariStr + " Tarihleri kontrol edin. ";					
+					uyariStr = uyariStr + " Tarihleri kontrol edin. ";		
+					dChsrBaslangicTarihi.setBackground(Color.red);
+					dChsrBitisTarihi.setBackground(Color.red);
 				}
 				else if(datebit.compareTo(datebas)<0)
 				{
@@ -439,13 +470,7 @@ public class KursAcma extends JFrame{
 					dChsrBitisTarihi.setBackground(Color.red);
 				}
 
-				if(cmbKurs.getSelectedIndex()==0)
-				{
-					islemYap = false;
-					uyariStr = uyariStr + " Bir kurs seçin.";
-					cmbKurs.setBackground(Color.red);
-				}
-				lblUyar.setText(uyariStr);
+				lblUyari.setText(uyariStr);
 
 				if(islemYap)
 				{    
@@ -666,22 +691,16 @@ public class KursAcma extends JFrame{
 			}
 		});
 		btnSorgula.setBackground(SystemColor.controlHighlight);
-		btnSorgula.setBounds(565, 51, 100, 20);
+		btnSorgula.setBounds(491, 254, 100, 20);
 		getContentPane().add(btnSorgula);
 
 		txtIndirimOrani = new JTextField();
-		txtIndirimOrani.setBounds(565, 675, 85, 20);
+		txtIndirimOrani.setBounds(635, 109, 85, 20);
 		getContentPane().add(txtIndirimOrani);
 		txtIndirimOrani.setColumns(10);
-		
-		lblUyar = new JLabel("");
-		lblUyar.setFont(new Font("Times New Roman", Font.BOLD, 11));
-		lblUyar.setForeground(Color.RED);
-		lblUyar.setBounds(21, 73, 206, 14);
-		getContentPane().add(lblUyar);
 
 		JLabel lblIndirim = new JLabel("\u0130ndirim : ");
-		lblIndirim.setBounds(434, 645, 72, 14);
+		lblIndirim.setBounds(504, 79, 72, 14);
 		getContentPane().add(lblIndirim);
 
 		rbtnIndirimVar = new JRadioButton("Var");
@@ -713,7 +732,7 @@ public class KursAcma extends JFrame{
 				}		
 			}
 		});
-		rbtnIndirimVar.setBounds(512, 645, 52, 23);
+		rbtnIndirimVar.setBounds(582, 79, 52, 23);
 		getContentPane().add(rbtnIndirimVar);
 
 		rdbtnYok = new JRadioButton("Yok");
@@ -746,28 +765,28 @@ public class KursAcma extends JFrame{
 				}							
 			}
 		});
-		rdbtnYok.setBounds(566, 645, 46, 23);
+		rdbtnYok.setBounds(636, 79, 46, 23);
 		getContentPane().add(rdbtnYok);
 
 		JLabel lblIndirimOranyzde = new JLabel("\u0130ndirim Oran\u0131 (Y\u00FCzde) : ");
-		lblIndirimOranyzde.setBounds(434, 678, 150, 14);
+		lblIndirimOranyzde.setBounds(504, 112, 150, 14);
 		getContentPane().add(lblIndirimOranyzde);
 
 		JLabel lblBitiTarihi = new JLabel("Biti\u015F Tarihi : ");
-		lblBitiTarihi.setBounds(260, 73, 90, 14);
+		lblBitiTarihi.setBounds(314, 215, 64, 14);
 		getContentPane().add(lblBitiTarihi);
 
 		dChsrBitisTarihi = new JDateChooser();
-		dChsrBitisTarihi.setBounds(376, 70, 155, 20);
+		dChsrBitisTarihi.setBounds(409, 209, 155, 20);
 		getContentPane().add(dChsrBitisTarihi);
 
 		JLabel lblSaat = new JLabel("Saat : ");
-		lblSaat.setBounds(169, 645, 78, 14);
+		lblSaat.setBounds(21, 112, 78, 14);
 		getContentPane().add(lblSaat);
 
 		cmbSaat = new JComboBox();
 		cmbSaat.setModel(new DefaultComboBoxModel(new String[] {"Saat se\u00E7iniz...", "Sabah", "\u00D6\u011Flen", "Ak\u015Fam"}));
-		cmbSaat.setBounds(257, 642, 135, 20);
+		cmbSaat.setBounds(116, 109, 155, 20);
 		getContentPane().add(cmbSaat);
 
 		tableGunSecimi = new JTable();
@@ -786,23 +805,23 @@ public class KursAcma extends JFrame{
 						"New column"
 				}
 				));
-		tableGunSecimi.setBounds(21, 611, 121, 112);
+		tableGunSecimi.setBounds(336, 70, 121, 112);
 		getContentPane().add(tableGunSecimi);
 
 		lblGnSeimi = new JLabel("G\u00FCn Se\u00E7imi :");
-		lblGnSeimi.setBounds(21, 586, 73, 14);
+		lblGnSeimi.setBounds(336, 45, 73, 14);
 		getContentPane().add(lblGnSeimi);
 
 		lblUyari = new JLabel("");
 		lblUyari.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblUyari.setForeground(Color.RED);
-		lblUyari.setBounds(26, 748, 366, 14);
+		lblUyari.setBounds(36, 256, 327, 14);
 		getContentPane().add(lblUyari);
 
 		panel_1 = new JPanel();
 		panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_1.setBackground(Color.WHITE);
-		panel_1.setBounds(10, 119, 681, 444);
+		panel_1.setBounds(10, 296, 747, 470);
 		getContentPane().add(panel_1);
 
 		lblSorgulamaSonucu = new JLabel("Sorgulama Sonucu");
@@ -810,50 +829,30 @@ public class KursAcma extends JFrame{
 		panel_1.add(lblSorgulamaSonucu);
 
 		lblretmen = new JLabel("\u00D6\u011Fretmen : ");
-		lblretmen.setBounds(169, 678, 78, 14);
+		lblretmen.setBounds(21, 144, 64, 14);
 		getContentPane().add(lblretmen);
 
 		lblFiyattl = new JLabel("Fiyat (TL) : ");
-		lblFiyattl.setBounds(434, 611, 103, 14);
+		lblFiyattl.setBounds(504, 45, 103, 14);
 		getContentPane().add(lblFiyattl);
 
 		txtFiyat = new JTextField();
-		txtFiyat.setBounds(565, 611, 85, 20);
+		txtFiyat.setBounds(635, 45, 85, 20);
 		getContentPane().add(txtFiyat);
 		txtFiyat.setColumns(10);
 
 		JLabel lblSalon = new JLabel("Salon : ");
-		lblSalon.setBounds(169, 713, 78, 14);
+		lblSalon.setBounds(21, 175, 78, 14);
 		getContentPane().add(lblSalon);
 
 		JLabel lblGrupAd = new JLabel("Grup Ad\u0131 : ");
-		lblGrupAd.setBounds(169, 611, 78, 14);
+		lblGrupAd.setBounds(21, 79, 64, 14);
 		getContentPane().add(lblGrupAd);
 
 		txtGrupAdi = new JTextField();
-		txtGrupAdi.setBounds(257, 608, 135, 20);
+		txtGrupAdi.setBounds(116, 76, 155, 20);
 		getContentPane().add(txtGrupAdi);
 		txtGrupAdi.setColumns(10);
-		
-		JPanel panel = new JPanel();
-		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel.setBackground(Color.WHITE);
-		panel.setBounds(10, 11, 681, 97);
-		getContentPane().add(panel);
-		
-		JLabel lblSorgulama = new JLabel("Sorgulama");
-		lblSorgulama.setFont(new Font("Tahoma", Font.BOLD, 11));
-		panel.add(lblSorgulama);
-		
-		JPanel panel_2 = new JPanel();
-		panel_2.setBorder(new LineBorder(new Color(0, 0, 0)));
-		panel_2.setBackground(Color.WHITE);
-		panel_2.setBounds(10, 576, 681, 205);
-		getContentPane().add(panel_2);
-		
-		JLabel lblKursAma = new JLabel("Kurs A\u00E7ma");
-		lblKursAma.setFont(new Font("Tahoma", Font.BOLD, 11));
-		panel_2.add(lblKursAma);
 
 
 		//scrollPane.setColumnHeaderView(table);

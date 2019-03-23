@@ -120,7 +120,7 @@ public class KursAcma extends JFrame{
 		getContentPane().add(table_1);
 		setTitle("Kurs A\u00E7ma");
 		setBackground(SystemColor.desktop);
-		setBounds(100,100,790,811);//setEnabled(false);
+		setBounds(100,100,790,780);//setEnabled(false);
 
 		OgretmenDAO ogrdao = new OgretmenDAO();
 		KursDAO kursdao = new KursDAO();
@@ -186,7 +186,7 @@ public class KursAcma extends JFrame{
 		getContentPane().add(lblBalangTarihi);
 
 		dChsrBaslangicTarihi = new JDateChooser();
-		dChsrBaslangicTarihi.setBounds(116, 209, 155, 20);
+		dChsrBaslangicTarihi.setBounds(116, 203, 155, 20);
 		Date dd = dChsrBaslangicTarihi.getDate();
 		getContentPane().add(dChsrBaslangicTarihi);
 
@@ -333,6 +333,7 @@ public class KursAcma extends JFrame{
 							//verileri database'e ekle.
 							//ilgili salonu, id bilgisinden bul
 							//ilgili ogretmen id bilgisini bul
+							secilenKurs = (String)cmbKurs.getSelectedItem();
 							Date dt1 = new Date();
 
 							/*Tablodan secilen indisleri al*/
@@ -428,7 +429,7 @@ public class KursAcma extends JFrame{
 			}
 		});
 		btnKursAc.setBackground(SystemColor.controlHighlight);
-		btnKursAc.setBounds(620, 254, 100, 20);
+		btnKursAc.setBounds(620, 234, 100, 20);
 		getContentPane().add(btnKursAc);
 
 		btnSorgula = new JButton("SORGULA");
@@ -437,7 +438,7 @@ public class KursAcma extends JFrame{
 
 				boolean islemYap=true;
 				String uyariStr="";
-				btnKursAc.setEnabled(false);
+				//btnKursAc.setEnabled(false);
 				try {
 					listegrup = grupdao.tumKayitlariGetir(new Grup());
 				} catch (Exception e1) {
@@ -474,7 +475,7 @@ public class KursAcma extends JFrame{
 
 				if(islemYap)
 				{    
-					btnKursAc.setEnabled(true);
+					//btnKursAc.setEnabled(true);
 					UnqSlnId.clear();
 					UnqOgrtId.clear();
 					String str;
@@ -691,7 +692,7 @@ public class KursAcma extends JFrame{
 			}
 		});
 		btnSorgula.setBackground(SystemColor.controlHighlight);
-		btnSorgula.setBounds(491, 254, 100, 20);
+		btnSorgula.setBounds(491, 234, 100, 20);
 		getContentPane().add(btnSorgula);
 
 		txtIndirimOrani = new JTextField();
@@ -773,11 +774,11 @@ public class KursAcma extends JFrame{
 		getContentPane().add(lblIndirimOranyzde);
 
 		JLabel lblBitiTarihi = new JLabel("Biti\u015F Tarihi : ");
-		lblBitiTarihi.setBounds(314, 215, 64, 14);
+		lblBitiTarihi.setBounds(314, 209, 64, 14);
 		getContentPane().add(lblBitiTarihi);
 
 		dChsrBitisTarihi = new JDateChooser();
-		dChsrBitisTarihi.setBounds(409, 209, 155, 20);
+		dChsrBitisTarihi.setBounds(409, 203, 155, 20);
 		getContentPane().add(dChsrBitisTarihi);
 
 		JLabel lblSaat = new JLabel("Saat : ");
@@ -815,13 +816,13 @@ public class KursAcma extends JFrame{
 		lblUyari = new JLabel("");
 		lblUyari.setFont(new Font("Tahoma", Font.BOLD, 11));
 		lblUyari.setForeground(Color.RED);
-		lblUyari.setBounds(36, 256, 327, 14);
+		lblUyari.setBounds(59, 240, 327, 14);
 		getContentPane().add(lblUyari);
 
 		panel_1 = new JPanel();
 		panel_1.setBorder(new LineBorder(new Color(0, 0, 0)));
 		panel_1.setBackground(Color.WHITE);
-		panel_1.setBounds(10, 296, 747, 470);
+		panel_1.setBounds(10, 274, 747, 462);
 		getContentPane().add(panel_1);
 
 		lblSorgulamaSonucu = new JLabel("Sorgulama Sonucu");
@@ -853,6 +854,16 @@ public class KursAcma extends JFrame{
 		txtGrupAdi.setBounds(116, 76, 155, 20);
 		getContentPane().add(txtGrupAdi);
 		txtGrupAdi.setColumns(10);
+		
+		JPanel panel = new JPanel();
+		panel.setBorder(new LineBorder(new Color(0, 0, 0)));
+		panel.setBackground(Color.WHITE);
+		panel.setBounds(10, 11, 747, 256);
+		getContentPane().add(panel);
+		
+		JLabel lblKursBilgileri = new JLabel("Kurs Bilgileri");
+		lblKursBilgileri.setFont(new Font("Tahoma", Font.BOLD, 11));
+		panel.add(lblKursBilgileri);
 
 
 		//scrollPane.setColumnHeaderView(table);

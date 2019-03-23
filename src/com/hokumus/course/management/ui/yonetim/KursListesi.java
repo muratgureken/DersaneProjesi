@@ -168,7 +168,6 @@ public class KursListesi extends JFrame{
 					cmbDurum.setBackground(Color.red);
 				}
 				lblUyari.setText(str);
-
 				if(islem)
 				{
 					int returnValue = 0;

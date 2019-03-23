@@ -50,6 +50,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.UIManager;
+import com.hokumus.course.management.util.CourseUtils;
 
 public class KursAcma extends JFrame{
 	JComboBox cmbKurs;
@@ -127,7 +128,6 @@ public class KursAcma extends JFrame{
 		GunDAO gundao = new GunDAO();
 		GrupDAO grupdao = new GrupDAO();
 		SalonDAO slndao = new SalonDAO();
-
 
 		//ogretmen ve salon database'ini oku
 		try {
@@ -232,7 +232,6 @@ public class KursAcma extends JFrame{
 		btnKursAc.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				boolean uyari=false;
-				
 				String str="",str2="";
 				tableGunSecimi.setBackground(Color.white);
 				txtIndirimOrani.setBackground(Color.white);
@@ -350,7 +349,7 @@ public class KursAcma extends JFrame{
 
 							Gun gun1 = new Gun();
 							gun1.setEklemeTarihi(dt1);
-							gun1.setEkleyen("Murat Güreken");
+							gun1.setEkleyen(CourseUtils.userName);
 							gun1.setGun1(secim[0]);
 							gun1.setGun2(secim[1]);
 							gun1.setGun3(secim[2]);
@@ -359,7 +358,7 @@ public class KursAcma extends JFrame{
 							gun1.setGun6(secim[5]);
 							gun1.setGun7(secim[6]);
 							gun1.setGuncellemeTarihi(dt1);
-							gun1.setGuncelleyen("Murat Güreken");
+							gun1.setGuncelleyen("");
 							gun1.setKayitDurumu(true);
 							//gun1.setId(id); /*otomatik eklenecek mi bakalim*/
 							gun1.setSaat(cmbSaat.getSelectedIndex()-1);
@@ -370,11 +369,11 @@ public class KursAcma extends JFrame{
 							kurs1.setbaslamaTarihi(datebas);
 							kurs1.setDurum("Kayýt açýk");
 							kurs1.setEklemeTarihi(dt1);
-							kurs1.setEkleyen("Murat Güreken");
+							kurs1.setEkleyen(CourseUtils.userName);
 							BigDecimal bd = new BigDecimal(txtFiyat.getText());
 							kurs1.setFiyat(bd);
 							kurs1.setGuncellemeTarihi(dt1);
-							kurs1.setGuncelleyen("Murat Güreken");
+							kurs1.setGuncelleyen("");
 							//kurs1.setId(id); /*otomatik eklenecek mi bakalim*/
 							kurs1.setKayitDurumu(true);
 							kursdao.kaydet(kurs1);
@@ -410,9 +409,10 @@ public class KursAcma extends JFrame{
 							grp1.setBaslamaTarihi(datebas);
 							grp1.setBitisTarihi(datebit);
 							grp1.setEklemeTarihi(dt1);
+							grp1.setEkleyen(CourseUtils.userName);
 							grp1.setGun(gun1);//gun bilgisi
 							grp1.setGuncellemeTarihi(dt1);
-							grp1.setGuncelleyen("Murat Güreken");
+							grp1.setGuncelleyen("");
 							//grp1.setId(id); /*otomatik eklenecek mi bakalim*/
 							grp1.setKurs(kurs1);//kurs bilgisi
 							grp1.setOgrenciSayisi(0);
@@ -610,6 +610,7 @@ public class KursAcma extends JFrame{
 									dataOgr[indis2][6] = StringDegeriCikar(dataOgr[indis2][6], indis4);
 								} 						
 							}
+							
 							if(listegrup.get(i).getGun().getGun6()==1)
 							{
 								indis3 = listegrup.get(i).getGun().getSaat();

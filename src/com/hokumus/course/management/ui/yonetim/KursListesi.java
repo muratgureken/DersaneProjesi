@@ -32,6 +32,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class KursListesi extends JFrame{
 	private JTable table;
@@ -42,7 +46,6 @@ public class KursListesi extends JFrame{
 	public KursListesi() {
 		getContentPane().setLayout(null);
 		setBounds(100, 100, 1200, 483);
-		KursListesi.this.setDefaultCloseOperation(0);
 		setTitle("Kurs Listesi");
 
 		GrupDAO kursdao = new GrupDAO();
@@ -66,6 +69,36 @@ public class KursListesi extends JFrame{
 		getContentPane().add(scrollPane);
 
 		table = new JTable(dataKurs,columnNames);
+		table.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				if(table.getSelectedRows().length!=0)
+				{
+					txtKursDurum.setText(kurslistesi.get(table.getSelectedRow()).getKurs().getDurum());
+				}
+				else
+				{
+					txtKursDurum.setText("");
+				}
+			}
+		});
+		table.addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent arg0) {
+
+			}
+			@Override
+			public void keyTyped(KeyEvent e) {
+				if(table.getSelectedRows().length!=0)
+				{
+					txtKursDurum.setText(kurslistesi.get(table.getSelectedRow()).getKurs().getDurum());
+				}
+				else
+				{
+					txtKursDurum.setText("");
+				}
+			}
+		});
 		scrollPane.setViewportView(table);
 		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 
@@ -77,9 +110,11 @@ public class KursListesi extends JFrame{
 		{
 			table.setValueAt(Long.toString(kurslistesi.get(i).getId()), i, 0);
 			table.setValueAt(kurslistesi.get(i).getKurs().getAdi(), i, 1);
-			strDate = dateFormat.format(kurslistesi.get(i).getBaslamaTarihi());  
+			strDate = kurslistesi.get(i).getBaslamaTarihi().toString();
+			strDate = strDate.substring(0, 10);
 			table.setValueAt(strDate, i, 2);
-			strDate = dateFormat.format(kurslistesi.get(i).getBitisTarihi());  
+			strDate = kurslistesi.get(i).getBitisTarihi().toString();  
+			strDate = strDate.substring(0, 10);
 			table.setValueAt(strDate, i, 3);
 			table.setValueAt(kurslistesi.get(i).getOgretmen().getAd()+" "+kurslistesi.get(i).getOgretmen().getSoyad(), i, 4);
 			table.setValueAt(Integer.toString(kurslistesi.get(i).getOgrenciSayisi()), i, 5);
@@ -221,26 +256,6 @@ public class KursListesi extends JFrame{
 		panel_1.setBounds(10, 11, 1164, 341);
 		getContentPane().add(panel_1);
 
-		Thread kursDurumSorgula = new Thread()
-		{
-			public void run()
-			{								
-				for(;;)
-				{
-					System.out.println("tablo seçim sayýsý thread : "+table.getSelectedRows().length);
-					if(table.getSelectedRows().length!=0)
-					{
-						txtKursDurum.setText(kurslistesi.get(table.getSelectedRow()).getKurs().getDurum());
-					}
-					else
-					{
-						txtKursDurum.setText("");
-					}
-				}
-			}
-		};
-		kursDurumSorgula.start();
-
 		JLabel lblKursDurum = new JLabel("Kurs Durum : ");
 		lblKursDurum.setBounds(41, 394, 97, 14);
 		getContentPane().add(lblKursDurum);
@@ -254,7 +269,6 @@ public class KursListesi extends JFrame{
 		JButton btnKapat = new JButton("Kapat");
 		btnKapat.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				kursDurumSorgula.stop();
 				KursListesi.this.setVisible(false);
 
 			}

@@ -41,7 +41,6 @@ public class Runner {
 		else
 		{
 			new EnterUser().setVisible(true);
-
 		}
 	}
 

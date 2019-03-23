@@ -22,6 +22,7 @@ import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import java.awt.Color;
 import java.awt.Font;
+import com.hokumus.course.management.util.CourseUtils;
 
 public class SalonAcma extends JFrame{
 	private JTable tableGuncelle;
@@ -40,6 +41,7 @@ public class SalonAcma extends JFrame{
 	int tabloBoy;
 	private JLabel lblUyari;
 	int secim=0;
+	String[] columnNames = {"Id", "Adý", "Kodu", "Kapasite"};
 
 	public SalonAcma() {
 		getContentPane().setLayout(null);
@@ -57,7 +59,6 @@ public class SalonAcma extends JFrame{
 			e1.printStackTrace();
 		}
 		String[][] dataSalon = new String[salonliste.size()][4];
-		String[] columnNames = {"Id", "Adý", "Kodu", "Kapasite"};
 
 		tableGuncelle = new JTable(dataSalon,columnNames);
 		scrollPane.setViewportView(tableGuncelle);
@@ -94,6 +95,16 @@ public class SalonAcma extends JFrame{
 				txtAd.setVisible(false);
 				txtKapasite.setVisible(false);
 				txtKod.setVisible(false);
+				
+				for(int i=0;i<salonliste.size();i++)
+				{
+					System.out.println("salon degerleri:"+salonliste.get(i).getId()+" "+
+							salonliste.get(i).getAdi()+" "+salonliste.get(i).getKod()+" "+salonliste.get(i).getKapasite());
+					tableGuncelle.setValueAt(Long.toString(salonliste.get(i).getId()), i, 0);							
+					tableGuncelle.setValueAt(salonliste.get(i).getAdi(), i, 1);							
+					tableGuncelle.setValueAt(salonliste.get(i).getKod(), i, 2);							
+					tableGuncelle.setValueAt(Integer.toString(salonliste.get(i).getKapasite()), i, 3);							
+				}
 			}
 		});
 		btnSalonBilgileriniGncelle.setBounds(181, 11, 145, 23);
@@ -183,9 +194,9 @@ public class SalonAcma extends JFrame{
 							salon1.setId(salonliste.get(i).getId());
 							salon1.setAdi((String)tableGuncelle.getValueAt(i, 1));
 							salon1.setEklemeTarihi(new Date());
-							salon1.setEkleyen("Murat Güreken");
+							salon1.setEkleyen("");
 							salon1.setGuncellemeTarihi(new Date());
-							salon1.setGuncelleyen("Murat Güreken");
+							salon1.setGuncelleyen(CourseUtils.userName);
 							salon1.setKapasite(Integer.parseInt((String)tableGuncelle.getValueAt(i, 3)));
 							salon1.setKayitDurumu(true);
 							salon1.setKod((String)tableGuncelle.getValueAt(i, 2));
@@ -207,18 +218,28 @@ public class SalonAcma extends JFrame{
 					{
 						salon1.setAdi(txtAd.getText());
 						salon1.setEklemeTarihi(new Date());
-						salon1.setEkleyen("Murat Güreken");
+						salon1.setEkleyen("CourseUtils.userName");
 						salon1.setGuncellemeTarihi(new Date());
-						salon1.setGuncelleyen("Murat Güreken");
+						salon1.setGuncelleyen("");
 						salon1.setKapasite(Integer.parseInt(txtKapasite.getText()));
 						salon1.setKayitDurumu(true);
 						salon1.setKod(txtKod.getText());
-
-						System.out.println("yeni kayýt id: "+salon1.getId());
-
+						
+						salonliste.add(salon1);
 						try {
 							salondao.kaydet(salon1);
 							lblUyari.setText("Salon eklendi.");
+							//tabloyu guncelle
+							/*int i=salonliste.size() - 1;
+							System.out.println("güncelle size:"+(i+1));
+							tableGuncelle.setSize(i+1, 4);
+							tableGuncelle.setValueAt(Long.toString(salonliste.get(i).getId()), i, 0);							
+							tableGuncelle.setValueAt(salonliste.get(i).getAdi(), i, 1);							
+							tableGuncelle.setValueAt(salonliste.get(i).getKod(), i, 2);							
+							tableGuncelle.setValueAt(Integer.toString(salonliste.get(i).getKapasite()), i, 3);	
+							System.out.println("yeni salon:"+salonliste.get(i).getId()+" "+salonliste.get(i).getAdi()+" "+
+							" "+salonliste.get(i).getKod());
+							tableGuncelle.repaint();*/
 						} catch (Exception e1) {
 							lblUyari.setText("Salon ekleme baþarýz!...");
 							e1.printStackTrace();

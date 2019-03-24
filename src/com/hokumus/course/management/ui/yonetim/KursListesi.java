@@ -231,6 +231,8 @@ public class KursListesi extends JFrame{
 							kursdao1.guncelle(kurs1);
 							lblUyari.setText("Kurs durum bilgisi güncellendi.");
 							kurslistesi.get(table.getSelectedRow()).getKurs().setDurum((String)cmbDurum.getSelectedItem());
+							table.setValueAt(cmbDurum.getSelectedItem(), table.getSelectedRow(), 8);
+
 						} catch (Exception e) {
 							lblUyari.setText("Kurs durum bilgisi güncellenemedi!...");
 							e.printStackTrace();

@@ -108,6 +108,7 @@ public class KursListesi extends JFrame{
 		DateFormat dateFormat = new SimpleDateFormat("dd-mm-yyyy");  
 		for(int i=0;i<kurslistesi.size();i++)
 		{
+			str1="";
 			table.setValueAt(Long.toString(kurslistesi.get(i).getId()), i, 0);
 			table.setValueAt(kurslistesi.get(i).getKurs().getAdi(), i, 1);
 			strDate = kurslistesi.get(i).getBaslamaTarihi().toString();
@@ -206,7 +207,7 @@ public class KursListesi extends JFrame{
 				if(islem)
 				{
 					int returnValue = 0;
-					returnValue = JOptionPane.showConfirmDialog(KursListesi.this, "Durum bilgisi güncellensin mi?");
+					returnValue = JOptionPane.showConfirmDialog(KursListesi.this, "Kurs durum bilgisi güncellensin mi?");
 					if(returnValue==0)
 					{
 						Kurs kurs1 = new Kurs();				

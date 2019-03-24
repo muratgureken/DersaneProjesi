@@ -324,7 +324,7 @@ public class KursAcma extends JFrame{
 				if(!uyari)
 				{
 					int returnValue;
-					returnValue = JOptionPane.showConfirmDialog(KursAcma.this, "Durum bilgisi güncellensin mi?");
+					returnValue = JOptionPane.showConfirmDialog(KursAcma.this, "Kurs açýlsýn mý?");
 					if(returnValue==0)
 					{
 						try {

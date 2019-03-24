@@ -60,7 +60,7 @@ public class SalonAcma extends JFrame{
 		}
 		String[][] dataSalon = new String[salonliste.size()][4];
 
-		tableGuncelle = new JTable(dataSalon,columnNames);
+		tableGuncelle = new JTable();
 		scrollPane.setViewportView(tableGuncelle);
 		tableGuncelle.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		tableGuncelle.setVisible(false);
@@ -69,7 +69,18 @@ public class SalonAcma extends JFrame{
 		tabloBoy = salonliste.size();
 		System.out.println("salon boyutu:"+salonliste.size());
 
-		for(int i=0;i<salonliste.size();i++)
+        String[][] data1 = new String[salonliste.size()][4];
+
+        for (int i = 0; i < salonliste.size(); i++) {
+
+            data1[i][0] = Long.toString(salonliste.get(i).getId());
+            data1[i][1] = salonliste.get(i).getAdi();
+            data1[i][2] = salonliste.get(i).getKod();
+            data1[i][3] = Integer.toString(salonliste.get(i).getKapasite());
+        }
+        tableGuncelle.setModel(new DefaultTableModel(data1, new String[]{"Id", "Adý", "Kodu", "Kapasite"}));
+		
+		/*for(int i=0;i<salonliste.size();i++)
 		{
 			System.out.println("salon degerleri:"+salonliste.get(i).getId()+" "+
 					salonliste.get(i).getAdi()+" "+salonliste.get(i).getKod()+" "+salonliste.get(i).getKapasite());
@@ -77,7 +88,7 @@ public class SalonAcma extends JFrame{
 			tableGuncelle.setValueAt(salonliste.get(i).getAdi(), i, 1);							
 			tableGuncelle.setValueAt(salonliste.get(i).getKod(), i, 2);							
 			tableGuncelle.setValueAt(Integer.toString(salonliste.get(i).getKapasite()), i, 3);							
-		}
+		}*/
 
 		btnSalonBilgileriniGncelle = new JButton("Salon G\u00FCncelle");
 		btnSalonBilgileriniGncelle.addActionListener(new ActionListener() {
@@ -89,6 +100,8 @@ public class SalonAcma extends JFrame{
 				scrollPane.setVisible(true);
 				btnTamam.setVisible(true);
 				btnVazgec.setVisible(true);
+				btnTamam.setEnabled(true);
+				btnVazgec.setEnabled(true);
 				lblAdI.setVisible(false);
 				lblKapasite.setVisible(false);
 				lblKodu.setVisible(false);
@@ -120,6 +133,8 @@ public class SalonAcma extends JFrame{
 				scrollPane.setVisible(true);
 				btnTamam.setVisible(true);
 				btnVazgec.setVisible(true);
+				btnTamam.setEnabled(true);
+				btnVazgec.setEnabled(false);
 				lblAdI.setVisible(true);
 				lblKapasite.setVisible(true);
 				lblKodu.setVisible(true);
@@ -138,8 +153,10 @@ public class SalonAcma extends JFrame{
 				tableGuncelle.setVisible(true);
 				tableGuncelle.setEnabled(false);
 				scrollPane.setVisible(true);
-				btnTamam.setVisible(false);
-				btnVazgec.setVisible(false);
+				btnTamam.setVisible(true);
+				btnVazgec.setVisible(true);
+				btnTamam.setEnabled(false);
+				btnVazgec.setEnabled(false);
 				lblAdI.setVisible(false);
 				lblKapasite.setVisible(false);
 				lblKodu.setVisible(false);
@@ -229,17 +246,7 @@ public class SalonAcma extends JFrame{
 						try {
 							salondao.kaydet(salon1);
 							lblUyari.setText("Salon eklendi.");
-							//tabloyu guncelle
-							/*int i=salonliste.size() - 1;
-							System.out.println("güncelle size:"+(i+1));
-							tableGuncelle.setSize(i+1, 4);
-							tableGuncelle.setValueAt(Long.toString(salonliste.get(i).getId()), i, 0);							
-							tableGuncelle.setValueAt(salonliste.get(i).getAdi(), i, 1);							
-							tableGuncelle.setValueAt(salonliste.get(i).getKod(), i, 2);							
-							tableGuncelle.setValueAt(Integer.toString(salonliste.get(i).getKapasite()), i, 3);	
-							System.out.println("yeni salon:"+salonliste.get(i).getId()+" "+salonliste.get(i).getAdi()+" "+
-							" "+salonliste.get(i).getKod());
-							tableGuncelle.repaint();*/
+							salonTabloDoldur();
 						} catch (Exception e1) {
 							lblUyari.setText("Salon ekleme baþarýz!...");
 							e1.printStackTrace();
@@ -253,7 +260,46 @@ public class SalonAcma extends JFrame{
 		btnTamam.setVisible(false);
 		getContentPane().add(btnTamam);
 
-		btnVazgec = new JButton("Vazge\u00E7");
+		btnVazgec = new JButton("Sil");
+		btnVazgec.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				lblUyari.setText("");				
+				//silme ekle.
+				if(tableGuncelle.getSelectedRows().length==0)
+				{
+					lblUyari.setText("Bir salon seçiniz!..");
+				}
+				else
+				{
+				Salon salonn = new Salon();
+				salonn.setId(salonliste.get(tableGuncelle.getSelectedRow()).getId());
+				salonn.setAdi(salonliste.get(tableGuncelle.getSelectedRow()).getAdi());
+				salonn.setKod(salonliste.get(tableGuncelle.getSelectedRow()).getKod());
+				salonn.setKapasite(salonliste.get(tableGuncelle.getSelectedRow()).getKapasite());				
+				try {
+					salondao.sil(salonn);
+					lblUyari.setText("Salon silindi!..");
+					
+					int index = SalonSatiriBul(salonn.getId());
+					salonliste.remove(index);
+			        String[][] data = new String[salonliste.size()][4];
+
+			        for (int i = 0; i < salonliste.size(); i++) {
+
+			            data[i][0] = salonliste.get(i).getId().toString();
+			            data[i][1] = salonliste.get(i).getAdi();
+			            data[i][2] = salonliste.get(i).getKod();
+			            data[i][3] = Integer.toString(salonliste.get(i).getKapasite());
+			        }
+			        tableGuncelle.setModel(new DefaultTableModel(data, new String[]{"Id", "Adý", "Kodu", "Kapasite"}));
+			        
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				}
+			}
+		});
 		btnVazgec.setBounds(372, 285, 89, 23);
 		btnVazgec.setVisible(false);
 		getContentPane().add(btnVazgec);
@@ -272,6 +318,36 @@ public class SalonAcma extends JFrame{
 		txtAd.setVisible(false);
 		txtKapasite.setVisible(false);
 		txtKod.setVisible(false);
+	}
+	
+    public void salonTabloDoldur() {
+
+        String[][] data = new String[salonliste.size()][4];
+
+        for (int i = 0; i < salonliste.size(); i++) {
+
+            data[i][0] = salonliste.get(i).getId().toString();
+            data[i][1] = salonliste.get(i).getAdi();
+            data[i][2] = salonliste.get(i).getKod();
+            data[i][3] = Integer.toString(salonliste.get(i).getKapasite());
+        }
+        tableGuncelle.setModel(new DefaultTableModel(data, new String[]{"Id", "Adý", "Kodu", "Kapasite"}));
+    }
+
+	public int SalonSatiriBul(Long id)
+	{
+		int index=-1;
+		
+		for(int i=0;i<salonliste.size();i++)
+		{
+			if(salonliste.get(i).getId()==id)
+			{
+				index = i;
+				break;
+			}
+		}
+		
+		return index;
 	}
 
 }
